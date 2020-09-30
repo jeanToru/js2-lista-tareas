@@ -4,6 +4,7 @@
 body {
   margin: 0;
   font-family: 'Ubuntu', sans-serif;
+  font-size: 23px;
 }
 
 .new-task-form {
@@ -20,7 +21,7 @@ body {
 
 .new-task-form input[type="submit"] {
   padding: 0.5rem 1rem;
-  background-color: #666;
+  background-color: gray;
   color: #fff;
 }
 
