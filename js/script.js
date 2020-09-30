@@ -27,8 +27,10 @@ function addTasks(nombreTarea, fechaTarea, completoTarea) {
   // Incrementa el contador de tareas.
   contador++;
 
-  // Retorna la nueva tarea que se añadió a la lista.
-  return miTarea;
+  // Se despliega la nueva tarea en el DOM.
+  appendTaskDOM(mitarea);
+
+  console.log(tareas)
 }
 
 //
@@ -72,7 +74,6 @@ formulario.addEventListener('submit', (event) => {
   // Agrega el nuevo ítem (modelo).
   const tarea = addTasks(formulario.elements[0].value, formulario.elements[1].value, false);
   // Se despliega la nueva tarea en el DOM.
-  appendTaskDOM(tarea);
 
   // Reseteamos ambos form.
   formulario.elements[0].value = '';
