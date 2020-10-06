@@ -61,9 +61,16 @@ function appendTaskDOM(tarea) {
     const label = document.createElement('label');
     label.setAttribute('for', `tarea-${tarea.id}`);
     label.innerHTML = `${tarea.nombre} - ${tarea.fecha}`;
+
+      // Botón de borrar.
+   const buttonDelete = document.createElement('button');
+   buttonDelete.className = 'task-list__delete';
+   buttonDelete.setAttribute('id', `delete-${tarea.id}`);
+   buttonDelete.innerHTML = 'Borrar';
     // Se agregan elementos.
     item.appendChild(checkbox);
     item.appendChild(label);
+    item.appendChild(buttonDelete);
     lista.appendChild(item);
 }
 
