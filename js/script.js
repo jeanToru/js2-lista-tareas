@@ -16,8 +16,15 @@ const dataLocal = localStorage.getItem('tareas');
 if (dataLocal) {
     tareas = JSON.parse(dataLocal);
 }
+// Se lee el contador de tareas del localStorage.
+const contadorLocalStorage = localStorage.getItem('contador');
+console.log(contadorLocalStorage);
 
 console.log(tareas);
+
+if (contadorLocalStorage) {
+    contadorTareas = parseInt(contadorLocalStorage);
+}
 
 // addTask(): Agrega una tarea en la lista.
 function addTasks(nombreTarea, fechaTarea, completoTarea) {
@@ -33,6 +40,8 @@ function addTasks(nombreTarea, fechaTarea, completoTarea) {
     tareas.push(miTarea);
     // Incrementa el contador de tareas.
     contador++;
+    // Se guarda el contador de tareas en localStorage.
+    localStorage.setItem('contador', contador);
 
     // Se despliega la nueva tarea en el DOM.
     appendTaskDOM(miTarea);
@@ -62,11 +71,11 @@ function appendTaskDOM(tarea) {
     label.setAttribute('for', `tarea-${tarea.id}`);
     label.innerHTML = `${tarea.nombre} - ${tarea.fecha}`;
 
-      // Botón de borrar.
-   const buttonDelete = document.createElement('button');
-   buttonDelete.className = 'task-list__delete';
-   buttonDelete.setAttribute('id', `delete-${tarea.id}`);
-   buttonDelete.innerHTML = 'Borrar';
+    // Botón de borrar.
+    const buttonDelete = document.createElement('button');
+    buttonDelete.className = 'task-list__delete';
+    buttonDelete.setAttribute('id', `delete-${tarea.id}`);
+    buttonDelete.innerHTML = 'Borrar';
     // Se agregan elementos.
     item.appendChild(checkbox);
     item.appendChild(label);
@@ -100,3 +109,11 @@ formulario.addEventListener('submit', (event) => {
     formulario.elements[0].value = '';
     formulario.elements[1].value = '';
 })
+
+
+const li = document.querySelectorAll('.task-list__item');
+
+for (let i = 0; i < li.length; i++) {
+    const checkbox = li[i].document.getElement('input');
+    
+}
