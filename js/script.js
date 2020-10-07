@@ -11,13 +11,13 @@ let contador = 0;
 // Lista de tareas (Array).
 let tareas = [];
 
-const dataLocal = localStorage.getItem('tareas');
+const dataLocal = localStorage.getItem("tareas");
 
 if (dataLocal) {
     tareas = JSON.parse(dataLocal);
 }
 // Se lee el contador de tareas del localStorage.
-const contadorLocalStorage = localStorage.getItem('contador');
+const contadorLocalStorage = localStorage.getItem("contador");
 console.log(contadorLocalStorage);
 
 console.log(tareas);
@@ -41,12 +41,12 @@ function addTasks(nombreTarea, fechaTarea, completoTarea) {
     // Incrementa el contador de tareas.
     contador++;
     // Se guarda el contador de tareas en localStorage.
-    localStorage.setItem('contador', contador);
+    localStorage.setItem("contador", contador);
 
     // Se despliega la nueva tarea en el DOM.
     appendTaskDOM(miTarea);
 
-    localStorage.setItem('tareas', JSON.stringify(tareas));
+    localStorage.setItem("tareas", JSON.stringify(tareas));
 
     console.log(tareas);
 }
@@ -56,64 +56,68 @@ function addTasks(nombreTarea, fechaTarea, completoTarea) {
 //
 
 // Lista de tareas (DOM).
-const lista = document.getElementById('task-list');
+const lista = document.getElementById("task-list");
 
 function appendTaskDOM(tarea) {
     // Item de la lista
-    const item = document.createElement('li');
-    item.className = 'task-list__item';
+    const item = document.createElement("li");
+    item.className = "task-list__item";
     // Checkbox.
-    const checkbox = document.createElement('input');
-    checkbox.setAttribute('type', 'checkbox');
-    checkbox.setAttribute('id', `tarea-${tarea.id}`);
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("id", `tarea-${tarea.id}`);
     // Label.
-    const label = document.createElement('label');
-    label.setAttribute('for', `tarea-${tarea.id}`);
+    const label = document.createElement("label");
+    label.setAttribute("for", `tarea-${tarea.id}`);
     label.innerHTML = `${tarea.nombre} - ${tarea.fecha}`;
 
     // Botón de borrar.
-    const buttonDelete = document.createElement('button');
-    buttonDelete.className = 'task-list__delete';
-    buttonDelete.setAttribute('id', `delete-${tarea.id}`);
-    buttonDelete.innerHTML = 'Borrar';
+    const buttonDelete = document.createElement("button");
+    buttonDelete.className = "task-list__delete";
+    buttonDelete.setAttribute("id", `delete-${tarea.id}`);
+    buttonDelete.innerHTML = "Borrar";
     // Se agregan elementos.
     item.appendChild(checkbox);
     item.appendChild(label);
     item.appendChild(buttonDelete);
     lista.appendChild(item);
+
+    checkbox.addEventListener("click", (event) => {
+        const id = checkbox.getAttribute("id");
+        console.log(id);
+    });
+    buttonDelete.addEventListener("click", (event) => {
+        const id = buttonDelete.getAttribute("id");
+        console.log(id);
+    });
 }
 
 for (let i = 0; i < tareas.length; i++) {
     appendTaskDOM(tareas[i]);
 }
 
-
 //
 // Controlador.
 //
 
 // Formulario para añadir tareas.
-const formulario = document.getElementById('new-task-form');
+const formulario = document.getElementById("new-task-form");
 
 // Event handler para el evento 'submit' del formulario.
 // Crea una nueva tarea.
-formulario.addEventListener('submit', (event) => {
+formulario.addEventListener("submit", (event) => {
     // Se cancela el comportamiento default del formulario.
     event.preventDefault();
 
     // Agrega el nuevo ítem (modelo).
-    const tarea = addTasks(formulario.elements[0].value, formulario.elements[1].value, false);
+    const tarea = addTasks(
+        formulario.elements[0].value,
+        formulario.elements[1].value,
+        false
+    );
     // Se despliega la nueva tarea en el DOM.
 
     // Reseteamos ambos form.
-    formulario.elements[0].value = '';
-    formulario.elements[1].value = '';
-})
-
-
-const li = document.querySelectorAll('.task-list__item');
-
-for (let i = 0; i < li.length; i++) {
-    const checkbox = li[i].document.getElement('input');
-    
-}
+    formulario.elements[0].value = "";
+    formulario.elements[1].value = "";
+});
