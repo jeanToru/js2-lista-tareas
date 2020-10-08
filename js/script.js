@@ -83,11 +83,11 @@ function appendTaskDOM(tarea) {
     lista.appendChild(item);
 
     checkbox.addEventListener("click", (event) => {
-        const id = checkbox.getAttribute("id");
+        const id = checkbox.getAttribute("id").substring(6);
         console.log(id);
     });
     buttonDelete.addEventListener("click", (event) => {
-        const id = buttonDelete.getAttribute("id");
+        const id = buttonDelete.getAttribute("id").substring(7);
         console.log(id);
     });
 }
