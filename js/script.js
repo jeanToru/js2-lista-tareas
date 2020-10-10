@@ -17,7 +17,7 @@ if (dataLocal) {
     tareas = JSON.parse(dataLocal);
 }
 // Se lee el contador de tareas del localStorage.
-const contadorLocalStorage = localStorage.getItem("contador");
+const contadorLocalStorage = localStorage.getItem('contador');
 console.log(contadorLocalStorage);
 
 console.log(tareas);
@@ -40,8 +40,9 @@ function addTasks(nombreTarea, fechaTarea, completoTarea) {
     tareas.push(miTarea);
     // Incrementa el contador de tareas.
     contador++;
-    // Se guarda el contador de tareas en localStorage.
-    localStorage.setItem("contador", contador);
+    console.log(contador);
+  // Se guarda el contador de tareas en localStorage.
+    localStorage.setItem('contador', contador);
 
     // Se despliega la nueva tarea en el DOM.
     appendTaskDOM(miTarea);
