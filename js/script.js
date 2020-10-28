@@ -5,7 +5,7 @@
 //
 // Modelo.
 //
-
+/* eslint-disable no-plusplus, no-underscore-dangle */
 // Lista de tareas (Array).
 let tareas = [];
 
