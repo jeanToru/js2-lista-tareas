@@ -6,39 +6,25 @@
 // Modelo.
 //
 
-// Contador de tareas (para asignar un id único a cada tarea).
-let contadorTareas = 0;
 // Lista de tareas (Array).
 let tareas = [];
 
 // Conexión al API usando fetch.
-fetch('https://js2-tareas-api.netlify.app/tareas?uid=23')
+fetch('https://js2-tareas-api.netlify.app/api/tareas?uid=23')
   .then((response) => response.json())
   .then((data) => {
-    console.log('fetch', data);
     tareas = data;
 
     // Inicialización de la lista del DOM, a partir de las tareas existentes.
     for (let i = 0; i < tareas.length; i++) {
-      appendTaskDOM(tareas[i]);
+      appendTaskDOM(tareas[i]); // eslint-disable-line no-use-before-define
     }
   });
-
-// Se lee el contador de tareas del localStorage.
-const contadorLocalStorage = localStorage.getItem('contador');
-console.log(contadorLocalStorage);
-
-console.log(tareas);
-
-if (contadorLocalStorage) {
-  contadorTareas = parseInt(contadorLocalStorage);
-}
 
 // addTask(): Agrega una tarea en la lista.
 function addTask(nombreTarea, fechaTarea, completoTarea) {
   // Crea un objeto que representa la nueva tarea.
   const nuevaTarea = {
-    _id: contadorTareas,
     name: nombreTarea,
     complete: completoTarea,
     date: fechaTarea,
@@ -47,13 +33,16 @@ function addTask(nombreTarea, fechaTarea, completoTarea) {
   // Agrega el objeto en el array.
   tareas.push(nuevaTarea);
 
-  // Incrementa el contador de tareas.
-  contadorTareas++;
-  // Se guarda el contador de tareas en localStorage.
-  localStorage.setItem('contador', contadorTareas);
+  const fetchOptions = {
+    method: 'POST',
+    body: JSON.stringify(nuevaTarea),
+  };
 
-  // Agrega la tarea al DOM.
-  appendTaskDOM(nuevaTarea);
+  fetch('https://js2-tareas-api.netlify.app/api/tareas?uid=23', fetchOptions)
+    .then((response) => response.json())
+    .then((data) => {
+      appendTaskDOM(data); // eslint-disable-line no-use-before-define
+    });
 
   // Guarda la lista de tareas en localStorage.
   localStorage.setItem('tareas', JSON.stringify(tareas));
@@ -121,13 +110,13 @@ function appendTaskDOM(tarea) {
   checkbox.addEventListener('click', (event) => {
     const complete = event.currentTarget.checked;
     const itemId = event.currentTarget.getAttribute('id');
-    const taskId = parseInt(itemId.substring(6));
+    const taskId = parseInt(itemId.substring(6), 10);
     taskStatus(taskId, complete);
   });
   // Evento para borrar tareas.
   buttonDelete.addEventListener('click', (event) => {
     const itemId = event.currentTarget.getAttribute('id');
-    const taskId = parseInt(itemId.substring(7));
+    const taskId = parseInt(itemId.substring(7), 10);
     deleteTask(taskId);
     // Borra la tarea en el DOM.
     event.currentTarget.parentNode.remove();
