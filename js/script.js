@@ -5,7 +5,7 @@
 //
 // Modelo.
 //
-/* eslint-disable no-plusplus, no-underscore-dangle */
+/* eslint-disable no-plusplus, no-underscore-dangle, prefer-destructuring */
 // Lista de tareas (Array).
 let tareas = [];
 
@@ -37,6 +37,10 @@ function addTask(nombreTarea, fechaTarea, completoTarea) {
     method: 'POST',
     body: JSON.stringify(nuevaTarea),
   };
+  // const fetchStatus = {
+  //   method: 'PUT',
+  //   body: JSON.stringify(nuevaTarea),
+  // };
 
   fetch('https://js2-tareas-api.netlify.app/api/tareas?uid=23', fetchOptions)
     .then((response) => response.json())
@@ -45,21 +49,34 @@ function addTask(nombreTarea, fechaTarea, completoTarea) {
     });
 
   // Guarda la lista de tareas en localStorage.
-  localStorage.setItem('tareas', JSON.stringify(tareas));
+  // localStorage.setItem('tareas', JSON.stringify(tareas));
 }
 
 // taskStatus(): Actualiza el estado de una tarea.
 function taskStatus(id, complete) {
   // Recorre la lista de tareas.
+  let task = null;
+
   for (let i = 0; i < tareas.length; i++) {
     // Cuando encuentra la tarea con el id correcto cambia su estado.
     if (tareas[i]._id === id) {
       tareas[i].complete = complete;
+      task = tareas[i]; // eslint-disable-line no-unused-vars
       break;
     }
   }
+  const fetchUpdate = {
+    method: 'PUT',
+    body: JSON.stringify(task),
+  };
+
+  fetch(`https://js2-tareas-api.netlify.app/api/tareas/${id}?uid=23`, fetchUpdate)
+    .then((response) => response.json())
+    .then((data) => {
+      appendTaskDOM(data); // eslint-disable-line no-use-before-define
+    });
   // Guarda la lista de tareas en localStorage.
-  localStorage.setItem('tareas', JSON.stringify(tareas));
+  // localStorage.setItem('tareas', JSON.stringify(tareas));
 }
 
 // deleteTask(): Borra una tarea.
@@ -72,8 +89,18 @@ function deleteTask(id) {
       break;
     }
   }
+
+  const fetchDelete = {
+    method: 'DELETE',
+  };
+
+  fetch(`https://js2-tareas-api.netlify.app/api/tareas/${id}?uid=23`, fetchDelete)
+    .then((response) => response.json())
+    .then((data) => {
+      appendTaskDOM(data); // eslint-disable-line no-use-before-define
+    });
   // Guarda la lista de tareas en localStorage.
-  localStorage.setItem('tareas', JSON.stringify(tareas));
+  // localStorage.setItem('tareas', JSON.stringify(tareas));
 }
 
 //
@@ -92,6 +119,7 @@ function appendTaskDOM(tarea) {
   checkbox.setAttribute('type', 'checkbox');
   checkbox.setAttribute('id', `tarea-${tarea._id}`);
   checkbox.checked = tarea.complete;
+  checkbox.dataset.taskId = tarea._id;
   // Label.
   const label = document.createElement('label');
   label.setAttribute('for', `tarea-${tarea._id}`);
@@ -100,6 +128,7 @@ function appendTaskDOM(tarea) {
   const buttonDelete = document.createElement('button');
   buttonDelete.className = 'task-list__delete';
   buttonDelete.setAttribute('id', `delete-${tarea._id}`);
+  buttonDelete.dataset.taskId = tarea._id;
   buttonDelete.innerHTML = 'Borrar';
   // Se agregan elementos.
   item.appendChild(checkbox);
@@ -109,14 +138,12 @@ function appendTaskDOM(tarea) {
   // Evento para marcar tareas como completas.
   checkbox.addEventListener('click', (event) => {
     const complete = event.currentTarget.checked;
-    const itemId = event.currentTarget.getAttribute('id');
-    const taskId = parseInt(itemId.substring(6), 10);
+    const taskId = event.currentTarget.dataset.taskId;
     taskStatus(taskId, complete);
   });
   // Evento para borrar tareas.
   buttonDelete.addEventListener('click', (event) => {
-    const itemId = event.currentTarget.getAttribute('id');
-    const taskId = parseInt(itemId.substring(7), 10);
+    const taskId = event.currentTarget.dataset.taskId;
     deleteTask(taskId);
     // Borra la tarea en el DOM.
     event.currentTarget.parentNode.remove();
