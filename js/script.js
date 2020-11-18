@@ -24,27 +24,23 @@ const formulario = document.getElementById('new-task-form');
 
 // MODELO - taskStatus(): Actualiza el estado de una tarea.
 function taskStatus(id, complete) {
-  // Recorre la lista de tareas.
-  for (let i = 0; i < tareas.length; i++) {
-    // Cuando encuentra la tarea con el id correcto cambia su estado.
-    tareas[i].complete = complete;
-    if (tareas[i]._id === id) {
-      const tareaActualizada = {
-        name: tareas[i].name,
-        complete,
-        date: tareas[i].date,
-      };
-      const fetchOptions = {
-        method: 'PUT',
-        body: JSON.stringify(tareaActualizada),
-      };
-      fetch(`https://js2-tareas-api.netlify.app/api/tareas/${id}?uid=${uid}`, fetchOptions)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-        });
-      break;
-    }
+  const tareaEncontrada = tareas.find((tarea) => tarea._id === id);
+  if (tareaEncontrada) {
+    tareaEncontrada.complete = complete;
+    const tareaActualizada = {
+      name: tareaEncontrada.name,
+      complete,
+      date: tareaEncontrada.date,
+    };
+    const fetchOptions = {
+      method: 'PUT',
+      body: JSON.stringify(tareaActualizada),
+    };
+    fetch(`https://js2-tareas-api.netlify.app/api/tareas/${id}?uid=${uid}`, fetchOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   }
 }
 
@@ -110,7 +106,12 @@ function appendTaskDOM(tarea) {
 }
 
 // VISTA - refreshTasksDOM(): Refresca la lista completa de tareas en el DOM.
-// PENDIENTE...
+function refreshTasksDOM(tasks) {
+  lista.innerHTML = '';
+  tasks.forEach((task) => {
+    appendTaskDOM(task);
+  });
+}
 
 // MODELO - addTask(): Agrega una tarea en la lista.
 function addTask(nombreTarea, fechaTarea, completoTarea) {
@@ -164,7 +165,5 @@ fetch(`https://js2-tareas-api.netlify.app/api/tareas?uid=${uid}`)
   .then((data) => {
     tareas = data;
     // VISTA - Inicialización de la lista del DOM, a partir de las tareas existentes.
-    for (let i = 0; i < tareas.length; i++) {
-      appendTaskDOM(tareas[i]);
-    }
+    refreshTasksDOM(tareas);
   });
