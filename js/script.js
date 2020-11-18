@@ -18,6 +18,7 @@ const lista = document.getElementById('task-list');
 // Formulario para añadir tareas.
 const formulario = document.getElementById('new-task-form');
 
+const completeTask = document.getElementById('hide-completed');
 //
 // Funciones.
 //
@@ -146,6 +147,11 @@ function addTask(nombreTarea, fechaTarea, completoTarea) {
 //
 
 // CONTROLADOR - Event handler para el evento 'submit' del formulario.
+completeTask.addEventListener('click', (event) => {
+  const complete = event.currentTarget.checked;
+  hideTasks(complete); // eslint-disable-line no-use-before-define
+});
+
 // Crea una nueva tarea.
 formulario.addEventListener('submit', (event) => {
   // Se cancela el comportamiento default del formulario.
@@ -167,3 +173,14 @@ fetch(`https://js2-tareas-api.netlify.app/api/tareas?uid=${uid}`)
     // VISTA - Inicialización de la lista del DOM, a partir de las tareas existentes.
     refreshTasksDOM(tareas);
   });
+
+function hideTasks(completes) {
+  console.log(completes);
+  tareas.forEach((tarea) => {
+    if (!tareas.complete) {
+      tareas.push(tarea);
+      lista.innerHTML = '';
+      appendTaskDOM(tarea);
+    }
+  });
+}
