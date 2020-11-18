@@ -24,6 +24,10 @@ body {
   }
 }
 
+.filters {
+  padding: 2rem;
+}
+
 .task-list {
   list-style-type: none;
   padding: 2rem;
@@ -51,7 +55,7 @@ body {
   margin-left: 10px;
   border: none;
   background-color: transparent;
-  background-image: url(../../img/trash.png);
+  background-image: url(../../images/trash.png);
   background-repeat: no-repeat;
   background-size: 12px 15.75px;
   width: 12px;
